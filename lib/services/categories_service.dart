@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:note_app/models/product_model.dart';
 
-class AllProductService {
-  Future<List<ProductModel>> getAllProducts() async {
-    http.Response response =
-        await http.get(Uri.parse('https://fakestoreapi.com/products'));
+class CategoriesService {
+  Future<List<ProductModel>> getCategoriesProducts(
+      {required String categoryName}) async {
+    http.Response response = await http.get(
+        Uri.parse('https://fakestoreapi.com/products/category/$categoryName'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
