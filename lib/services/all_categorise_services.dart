@@ -1,19 +1,17 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:note_app/helper/api.dart';
 
 class AllCategoirseService {
   Future<List<dynamic>> getAllCategoirse() async {
-    http.Response response = await http
-        .get(Uri.parse('https://fakestoreapi.com/products/categories'));
+    Response response =
+        await Api().get(url: 'https://fakestoreapi.com/products/categories');
+    // http.Response response = await http
+    //     .get(Uri.parse('https://fakestoreapi.com/products/categories'));
 
-    if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(response.body);
+    List<dynamic> data = jsonDecode(response.body);
 
-      return data;
-    } else {
-      throw Exception(
-          'there is proplem with status code ${response.statusCode}');
-    }
+    return data;
   }
 }
