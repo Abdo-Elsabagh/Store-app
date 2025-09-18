@@ -127,7 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
             'category': 'electronic'
           }, headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization' : 'Bearer ' 
           });
           print(response.body);
         },
@@ -136,6 +137,6 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+    ); 
   }
 }
