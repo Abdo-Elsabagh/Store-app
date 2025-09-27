@@ -41,7 +41,6 @@ class HomePage extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                print(snapshot.hasData);
                 if (snapshot.hasData) {
                   return GridView.builder(
                       clipBehavior: Clip.none,
