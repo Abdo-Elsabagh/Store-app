@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:note_app/models/product_model.dart';
+import 'package:note_app/services/get_all_product_service.dart';
+import 'package:note_app/widget/custom_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,65 +25,39 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
-        body: Center(
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                height: 130,
-                width: 200,
-                decoration: BoxDecoration(boxShadow: [
-                  BoxShadow(
-                    blurRadius: 40,
-                    color: Colors.grey.withOpacity(.2),
-                    spreadRadius: 0,
-                    offset: const Offset(10, 10),
-                  )
-                ]),
-                child: const Card(
-                  elevation: 10,
-                  color: Colors.white,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Handbag LV',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              r'$255',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            Icon(
-                              Icons.favorite_border,
-                              color: Colors.red,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                right: 32,
-                top: -65,
-                child: Image.network(
-                  'https://img.pikbest.com/backgrounds/20190829/simple-sound-black-background-image_2840079.jpg!w700wp',
-                  height: 100,
-                ),
-              ),
-            ],
-          ),
-        ));
+        body: Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 65),
+            child: FutureBuilder<List<ProductModel>>(
+              future: AllProductService().getAllProducts(),
+              builder: (context, snapshot) {
+                print("hasData: ${snapshot.hasData}");
+                print("hasError: ${snapshot.hasError}");
+                print("connectionState: ${snapshot.connectionState}");
+
+                if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                print(snapshot.hasData);
+                if (snapshot.hasData) {
+                  return GridView.builder(
+                      clipBehavior: Clip.none,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 1.5,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 100),
+                      itemBuilder: (context, index) {
+                        return const CustomCard();
+                      });
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+            )));
   }
 }
