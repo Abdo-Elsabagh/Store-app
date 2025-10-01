@@ -30,19 +30,10 @@ class HomePage extends StatelessWidget {
             child: FutureBuilder<List<ProductModel>>(
               future: AllProductService().getAllProducts(),
               builder: (context, snapshot) {
-                print("hasData: ${snapshot.hasData}");
-                print("hasError: ${snapshot.hasError}");
-                print("connectionState: ${snapshot.connectionState}");
-
-                if (snapshot.hasError) {
-                  return Center(child: Text("Error: ${snapshot.error}"));
-                }
-
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
                 if (snapshot.hasData) {
+                  List<ProductModel> products = snapshot.data!;
                   return GridView.builder(
+                      itemCount: products.length,
                       clipBehavior: Clip.none,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
@@ -51,7 +42,9 @@ class HomePage extends StatelessWidget {
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 100),
                       itemBuilder: (context, index) {
-                        return const CustomCard();
+                        return CustomCard(
+                          product: products[index],
+                        );
                       });
                 } else {
                   return const Center(child: CircularProgressIndicator());
