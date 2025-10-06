@@ -66,8 +66,22 @@ class CustomCard extends StatelessWidget {
               product.image,
               height: 100,
               width: 100,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                } else {
+                  return const SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+              },
             ),
-          ),
+          )
         ],
       ),
     );
