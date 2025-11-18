@@ -30,6 +30,17 @@ class HomePage extends StatelessWidget {
             child: FutureBuilder<List<ProductModel>>(
               future: AllProductService().getAllProducts(),
               builder: (context, snapshot) {
+                print("hasError: ${snapshot.hasError}");
+                print(snapshot.error);
+                print("connectionState: ${snapshot.connectionState}");
+
+                if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
                 if (snapshot.hasData) {
                   List<ProductModel> products = snapshot.data!;
                   return GridView.builder(

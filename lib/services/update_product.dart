@@ -4,7 +4,7 @@ import 'package:note_app/models/product_model.dart';
 class UpdateProductService {
   Future<ProductModel> updateProduct(
       {required String title,
-      required String price,
+      required double price,
       required String desc,
       required String image,
       required String id,

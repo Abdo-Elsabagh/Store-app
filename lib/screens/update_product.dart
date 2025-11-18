@@ -99,15 +99,19 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                   onTop: () async {
                     isLoading = true;
                     setState(() {});
+                    await UpdateProduct(product);
                     try {
-                      UpdateProduct(product);
+                      //  await UpdateProduct(product);
                       print('success');
-                      BoxScreen(
-                          massage: 'Update success 😊',
-                          text: 'The product has been successfully updated.',
-                          icon: const Icon(
-                            Icons.check_circle,
-                          ));
+                      showDialog(
+                        context: context,
+                        builder: (context) => BoxScreen(
+                            massage: 'Update success 😊',
+                            text: 'The product has been successfully updated.',
+                            icon: const Icon(
+                              Icons.check_circle,
+                            )),
+                      );
                     } catch (e) {
                       print(e.toString());
                     }
@@ -124,10 +128,10 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
     );
   }
 
-  void UpdateProduct(ProductModel product) {
-    UpdateProductService().updateProduct(
+  Future<void> UpdateProduct(ProductModel product) async {
+    await UpdateProductService().updateProduct(
         title: producName == null ? product.title : producName!,
-        price: price == null ? product.price.toString() : price!,
+        price: price == null ? product.price : price!,
         desc: discription == null ? product.description : discription!,
         image: image == null ? product.image : image!,
         category: product.category,
